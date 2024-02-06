@@ -1,7 +1,6 @@
-import * as React from 'react';
 import axios from 'axios';
 const UsePost = () => {
-
+  debugger
     const post = async (url, data) => {
         try {
            console.log(data);

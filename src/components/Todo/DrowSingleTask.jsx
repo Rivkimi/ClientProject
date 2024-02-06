@@ -7,24 +7,29 @@ import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Checkbox from '@mui/material/Checkbox';
 import EditTaskDialog from './EditTask';
-import { Delete } from '../redux/Todoslice';
+import { Delete,Edit } from '../redux/Todoslice';
 
 
 export default function TaskCard(props) {
     const [checked, setChecked] = React.useState(true);
-    const Tasks = useSelector((state) => state.TaskSlice.Task);
     const dispatch = useDispatch()
 
-    const handleChange = (event) => {
-        setChecked(event.target.checked);
-    };
+    // const handleChange = (event) => {
+    //     setChecked(event.target.checked);
+    // };
     const handleClickDelete = () => {
         dispatch(Delete({ id: props.element.id }))
     };
+    const handleCheckboxChange = (event) => {
+        console.log(checked)
+        event.stopPropagation();
+        setChecked(!checked);
+        dispatch(Edit(props.element))
+     };
     return (
         <Card sx={{ maxWidth: 345 }}>
             <CardHeader
-                title={props.element.id + " " + props.element.name}
+                title={ props.element.name}
                 subheader={props.element.createDate}
             >
             </CardHeader>
@@ -37,9 +42,9 @@ export default function TaskCard(props) {
                 </IconButton >
                 <Checkbox
                     checked={props.element.checkbox}
-                    onChange={handleChange}
+                    onChange={handleCheckboxChange}
                     inputProps={{ 'aria-label': 'controlled' }}
-                />
+                                    />
             </CardActions>
         </Card>
     );
