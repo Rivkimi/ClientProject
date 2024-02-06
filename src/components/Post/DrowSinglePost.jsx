@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { styled } from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -10,6 +11,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import EditPostDialog from './EditPost'
 import DeleteIcon from '@mui/icons-material/Delete';
+import { Delete, Edit } from '../redux/Postslice';
 
 
 const ExpandMore = styled((props) => {
@@ -23,46 +25,55 @@ const ExpandMore = styled((props) => {
     }),
 }));
 
-export default function PostCard() {
+export default function PostCard(props) {
+    const [cntLike, setCntLike] = React.useState(props.element.like)
+    const [likeColor, setLikeColor] = React.useState("default")
     const [expanded, setExpanded] = React.useState(false);
-    const [favoriteColor, setFavoriteColor] = React.useState("default")
+
+    const dispatch = useDispatch()
 
     const handleExpandClick = () => {
         setExpanded(!expanded);
     };
-    const handleFavoriteClick = () => {
-        if (favoriteColor == "default") {
-            setFavoriteColor("error");
-            setCntFavorite(cntFavorite + 1)
+    const handlelikeClick = () => {
+        if (likeColor == "default") {
+            setLikeColor("error");
+            setCntLike(cntLike + 1)
         }
         else {
-            setFavoriteColor("default")
-            setCntFavorite(cntFavorite - 1)
+            setLikeColor("default")
+            setCntLike(cntLike - 1)
         }
     };
-    const [cntFavorite, setCntFavorite] = React.useState(0)
+    const handleClickDelete = () => {
+        console.log(props);
+        dispatch(Delete({ id: props.element.id }))
+    };
     return (
         <Card sx={{ maxWidth: 345 }}>
-            <IconButton aria-label="favorite" color={favoriteColor} onClick={handleFavoriteClick}>
-                <FavoriteIcon /> </IconButton>
-            {cntFavorite}
+            <IconButton aria-label="like" color={likeColor} onClick={handlelikeClick}>
+                <FavoriteIcon />
+            </IconButton>
+            {cntLike}
             <CardContent>
-                <Typography variant="body2" color="text.secondary">
-                    some text
+                <Typography variant="body2" color="text.secondary" >
+                    {props.element.contant}
                 </Typography>
             </CardContent>
             <Collapse in={expanded} timeout="auto" unmountOnExit>
                 <CardContent>
                     <Typography paragraph>
-                        more text
+                        {props.element.contant}
                     </Typography>
                 </CardContent>
             </Collapse>
             <CardActions disableSpacing>
-                <IconButton aria-label="delete a post">
+                <IconButton aria-label="delete a post"
+                    onClick={handleClickDelete}
+                >
                     <DeleteIcon />
                 </IconButton>
-                <EditPostDialog/>
+                <EditPostDialog />
                 <ExpandMore
                     expand={expanded}
                     onClick={handleExpandClick}
@@ -72,9 +83,6 @@ export default function PostCard() {
                     <ExpandMoreIcon />
                 </ExpandMore>
             </CardActions>
-
-
-
         </Card>
     );
 }

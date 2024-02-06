@@ -31,7 +31,7 @@ export default function EditTaskDialog() {
     setOpen(true);
   };
   const handleCloseSave = () => {
-    // dispatch(Edit({ task: Task, payload: Tasks }))
+    dispatch(Edit({ task: Task, payload: Tasks }))
     setOpen(false);
   };
   const handleClose = () => {

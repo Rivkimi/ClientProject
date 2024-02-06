@@ -12,11 +12,10 @@ import { Add } from '../redux/Todoslice';
 import TaskCard from './DrowSingleTask';
 
 export default function AddTaskDialog() {
-  const [publicId, setPublicId] = React.useState(1)
   const Tasks = useSelector((state) => state.TaskSlice.Task);
-  const [id, setId] = React.useState("");
+  const [id, setId] = React.useState(0);
   const [name, setName] = React.useState("");
-  const [createDate, setCreateDate] = React.useState("");
+  const [createDate, setCreateDate] = React.useState("2024-02-01T15:40:53.440Z");
   const [checkbox, setCheckbox] = React.useState(false);
   const [open, setOpen] = React.useState(false);
 
@@ -29,7 +28,7 @@ export default function AddTaskDialog() {
   const dispatch = useDispatch()
 
   const handleCloseSave = () => {
-    dispatch(Add({task:Task, payload: Tasks }))
+    dispatch(Add( Task ))
     setOpen(false);
   };
   const handleClickOpen = () => {
@@ -40,7 +39,7 @@ export default function AddTaskDialog() {
     <TaskCard />
     setOpen(false);
   };
-  return (    
+  return (
     <React.Fragment>
       <Button onClick={handleClickOpen}>
         <IconButton variant="outlined" aria-label="add task">
@@ -59,19 +58,14 @@ export default function AddTaskDialog() {
             fullWidth
             variant="standard"
             onChange={(e) => {
-              setId(publicId)
-              setPublicId(publicId + 1)
               setName(e.target.value)
-              var today = new Date(),
-                date = today.getFullYear() + '/' + (today.getMonth() + 1) + '/' + today.getDate();
-              setCreateDate(date)
             }}
           />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button 
-          onClick={handleCloseSave}
+          <Button
+            onClick={handleCloseSave}
           >Save</Button>
         </DialogActions>
       </Dialog>

@@ -1,4 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit'
+import UseGet from '../../Hooks/GetHook'
+import UseDelete from '../../Hooks/DeleteHook';
+import UsePut from '../../Hooks/PutHook';
+import UsePost from '../../Hooks/PostHook';
+
 const initVal = {
     Post: []
 }
@@ -6,25 +11,25 @@ const PostSlice = createSlice({
     name: "Post",
     initialState: initVal,
     reducers: {
+        Get: (state) => {
+            const [get, data] = UseGet();
+            get('https://localhost:7290/api/Post')
+            state.Post = data;
+        },
         Add: (state, actions) => {
-            state.Post.push(actions.payload.post)
+            console.log(actions.payload);
+            const Post = UsePost();
+            Post('https://localhost:7290/api/Post', actions.payload)
         },
         Delete: (state, actions) => {
-            state.Post = state.Post.filter((item) => {
-                return (actions.payload.id !== item.id)
-            });
+            const Delete = UseDelete();
+            Delete('https://localhost:7290/api/Post/api/DeletePosts/' + actions.payload.id)
         },
         Edit: (state, actions) => {
-
-            state.Post.forEach(element => {
-                if (element.id === actions.payload.post.id) {
-                    element.titel = actions.payload.post.titel
-                    element.content = actions.payload.post.content
-                    element.time = actions.payload.post.time
-                }
-            });
+            const Put = UsePut();
+            Put('https://localhost:7290/api/Post', actions.payload);
         },
     }
 })
-export const { Add, Delete, Edit } = PostSlice.actions
+export const { Get, Add, Delete, Edit } = PostSlice.actions
 export default PostSlice.reducer

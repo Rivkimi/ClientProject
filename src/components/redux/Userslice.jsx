@@ -5,30 +5,31 @@ import UsePut from '../../Hooks/PutHook';
 import UsePost from '../../Hooks/PostHook';
 
 const initVal = {
-    Task: []
+    User: []
 }
-const TaskSlice = createSlice({
-    name: "Task",
+const UserSlice = createSlice({
+    name: "User",
     initialState: initVal,
     reducers: {
         Get: (state) => {
             const [get, data] = UseGet();
-            get('https://localhost:7290/api/ToDo')
-            state.Task = data;
+            get('https://localhost:7290/api/Users')
+            state.User = data;
         },
         Add: (state, actions) => {
+            console.log(actions.payload);
             const Post = UsePost();
-            Post('https://localhost:7290/api/ToDo', actions.payload)
+            Post('https://localhost:7290/api/Users', actions.payload)
         },
         Delete: (state, actions) => {
             const Delete = UseDelete();
-            Delete('https://localhost:7290/api/ToDo/api/DeleteToDos/' + actions.payload.id)
+            Delete('https://localhost:7290/api/Users/api/DeleteUserss/' + actions.payload.id)
         },
         Edit: (state, actions) => {
             const Put = UsePut();
-            Put('https://localhost:7290/api/ToDo', actions.payload);
+            Put('https://localhost:7290/api/Users', actions.payload);
         },
     }
 })
-export const { Get, Add, Delete, Edit } = TaskSlice.actions
-export default TaskSlice.reducer
+export const { Get, Add, Delete, Edit } = UserSlice.actions
+export default UserSlice.reducer
